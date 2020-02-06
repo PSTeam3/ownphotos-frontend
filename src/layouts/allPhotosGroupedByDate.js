@@ -46,14 +46,15 @@ export class AllPhotosGroupedByDate extends Component {
     this.receivedAllProps = this.receivedAllProps.bind(this)
     this.calculateEntrySquareSize = this.calculateEntrySquareSize.bind(this)
     this.groupedPhotosToImageGrids = this.groupedPhotosToImageGrids.bind(this)
-	this.getYear = this.getYear.bind(this);
-	this.getMonth = this.getMonth.bind(this);
+	//this.getYear = this.getYear.bind(this);
+	//this.getMonth = this.getMonth.bind(this);
 	this.searchDay=this.searchDay.bind(this);
   	this.setState({
-	  year_txt : 13,
-	  month_txt : 32,
-          inputYear:13,
-          inputMonth:32,
+	  //year_txt : 13,
+	  //month_txt : 32,
+          //inputYear:13,
+          //inputMonth:32,
+          inputDate:"*",
       width:  window.innerWidth,
       height: window.innerHeight,
       entrySquareSize:200
@@ -122,20 +123,46 @@ export class AllPhotosGroupedByDate extends Component {
     var photosGroupedByDate = {}
     photosGroupedByDate['Unknown Date'] = []
 
-	const curYear = this.state.year_txt;
-	const curMonth = this.state.month_txt;
-
+	//const curYear = this.state.year_txt;
+	//const curMonth = this.state.month_txt;
+        const targetDate=this.state.inputDate;
     this.props.photos.map(function(photo){
       if (photo.exif_timestamp != null) {
         var date = photo.exif_timestamp.split('T')[0]
 		var year = date.substring(0,4)
 		var month = date.substring(5,7)
-		
+		//alert("year" ,curYear,curMonth)
+                
+//alert(targetDate)
+               
+                if(targetDate!=null)
+		{  if(targetDate.includes("*"))
+			{
+				if(targetDate.indexOf("*")==5 && targetDate.substring(0,4)==year)
+				{
+				  
+					photosGroupedByDate[date] = []
+					photosGroupedByDate[date].push(photo)
+				}
+                                else if(targetDate.indexOf("*")==0 && targetDate.substring(2)==month)
+				{	photosGroupedByDate[date] = []
+					photosGroupedByDate[date].push(photo)
+				}
+			}
+                   else if(targetDate.substring(0,4)==year &&targetDate.substring(5)==month)
+			{
+				photosGroupedByDate[date] = []
+				photosGroupedByDate[date].push(photo)
+			}
+						
+		}
+
 		/*if(photosGroupedByDate.hasOwnProperty(date)){
 			photosGroupedByDate[date] = []
 			
 		}*/
-		if(curYear == 13 && curMonth == 32){
+
+		/*if(curYear == 13 && curMonth == 32){
 			photosGroupedByDate[date] = []
 				photosGroupedByDate[date].push(photo)
 		} else if(curYear == year && curMonth == 32){
@@ -147,7 +174,7 @@ export class AllPhotosGroupedByDate extends Component {
 		} else if(curYear == year && curMonth == month){
 				photosGroupedByDate[date] = []
 				photosGroupedByDate[date].push(photo)
-		}
+		}*/
 
       }
       else {
@@ -159,7 +186,7 @@ export class AllPhotosGroupedByDate extends Component {
         
 
 
-	getYear(e){  
+	/*getYear(e){  
 			
 			this.setState({
 			inputYear:e.target.value
@@ -173,18 +200,20 @@ export class AllPhotosGroupedByDate extends Component {
 			inputMonth: e.target.value
 			//day_txt : e.target.value
                 });
-	}
+	}*/
+
 	searchDay(e)
 	{
+                const ent=prompt(" Enter the year/month that you serach \n if you search all month or all day using * \n like 2017/* or */08")
+                alert(ent)
+
 		this.setState({
-		year_txt:this.state.inputYear,
-		month_txt:this.state.inputMonth
+		
+                inputDate:ent
 		
 		});
-		//alert(this.state.year_txt)
-		//alert(this.state.month_txt)
+		
 	
-		//alert("search")	
 	}
 
 
@@ -271,20 +300,15 @@ export class AllPhotosGroupedByDate extends Component {
         </div>
       )
     }
-	const year_txt = this.state.year_txt;
-	const month_txt = this.state.month_txt;
-        const inputYear=this.state.inputYear;
-	const inputMonth=this.state.inputMonth;
+	//const year_txt = this.state.year_txt;
+	//const month_txt = this.state.month_txt;
+        //const inputYear=this.state.inputYear;
+	//const inputMonth=this.state.inputMonth;
+        const inputDate=this.state.inputDate;
     return (
       <div>
-		<input
-			value={inputYear}
-			onChange={this.getYear} />
-		<input
-			value={inputMonth}
-			onChange={this.getMonth} />
-		<button onClick={this.searchDay} >
-		Search</button>
+		
+		<button onClick={this.searchDay} >search</button>
 			
         {renderable}
       </div>
