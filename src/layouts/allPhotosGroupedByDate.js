@@ -131,9 +131,7 @@ export class AllPhotosGroupedByDate extends Component {
         var date = photo.exif_timestamp.split('T')[0]
 		var year = date.substring(0,4)
 		var month = date.substring(5,7)
-		//alert("year" ,curYear,curMonth)
-                
-//alert(targetDate)
+		
                
                 if(targetDate!=null)
 		{  if(targetDate.includes("*"))
@@ -205,8 +203,7 @@ export class AllPhotosGroupedByDate extends Component {
 	searchDay(e)
 	{
                 const ent=prompt(" Enter the year/month that you serach \n if you search all month or all day using * \n like 2017/* or */08")
-                alert(ent)
-
+                
 		this.setState({
 		
                 inputDate:ent
@@ -323,7 +320,8 @@ AllPhotosGroupedByDate = connect((store)=>{
   return {
     fetchedPhotos: store.photos.fetchedPhotos,
     fetchingPhotos: store.photos.fetchingPhotos,
-    photos: store.photos.photos,    
+    photos: store.photos.photos,
+    photosGroupedByDate:store.photos.photos,    
     albumsDateList: store.albums.albumsDateList,
     fetchingAlbumsDateList: store.albums.fetchingAlbumsDateList,
     fetchedAlbumsDateList: store.albums.fetchedAlbumsDateList,
